@@ -3275,9 +3275,14 @@ UMaterialInstanceDynamic* createPrimitiveMaterialInstance(
     check(pMaterial);
     // pMaterial created above may not have used the suggested pBaseMaterial
     // passed as input.
-    pBaseMaterial = pMaterial->Parent.Get();
+    // pBaseMaterial = pMaterial->Parent.Get();
     // May have changed, but we don't need it from now on:
-    pUserDesignatedMaterialAsDynamic = nullptr;
+    // pUserDesignatedMaterialAsDynamic = nullptr;
+
+    /* CESIUM OVERRIDE NOTES:
+     * Fix dynamic material references lost when using LifecycleEventReceiver
+     * Component. pBaseMaterial = pMaterial->Parent.Get(); and pUserDesignatedMaterialAsDynamic = nullptr;
+     */
   } else {
     // Same as ICesium3DTilesetLifecycleEventReceiver::CreateMaterial's
     // default implementation

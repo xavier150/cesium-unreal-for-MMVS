@@ -43,4 +43,26 @@ public:
 
 private:
   CesiumPrimitiveData _cesiumData;
+
+public:
+  // Bound Custom Offset
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tag|CesiumOverride")
+  FVector BoundCustomOffset = FVector(0.0f, 0.0f, 0.0f);
+
+  // Bound Custom Extend
+  UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tag|CesiumOverride")
+  FVector BoundCustomExtend = FVector(0.0f, 0.0f, 0.0f);
+
+  // Set custom bound
+  UFUNCTION(BlueprintCallable, Category = "Tag|CesiumOverride")
+  void SetCesiumBoundOverride(FVector CustomOffset, FVector CustomExtend) {
+    BoundCustomOffset = CustomOffset;
+    BoundCustomExtend = CustomExtend;
+  }
+
+  /* CESIUM OVERRIDE NOTES:
+   * Add custom bounds for CesiumGltfPrimitiveComponent
+   * Added BoundCustomOffset and BoundCustomExtend properties,
+   * and SetCesiumBoundOverride function to allow for custom bounding box overrides.
+   */
 };

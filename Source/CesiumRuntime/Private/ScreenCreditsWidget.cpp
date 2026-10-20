@@ -157,12 +157,22 @@ const FSlateBrush* UCreditsDecorator::FindImageBrush(int32 id) {
   return nullptr;
 }
 
+/* CESIUM OVERRIDE NOTES:
+ * Fix crash error report on dedicated server
+ * UScreenCreditsWidget::UScreenCreditsWidget replaced
+ */
+
 UScreenCreditsWidget::UScreenCreditsWidget(
     const FObjectInitializer& ObjectInitializer)
     : UUserWidget(ObjectInitializer) {
+#if UE_SERVER
+  _font =
+      FCoreStyle::GetDefaultFontStyle("Regular", 8); // Use default Slate font
+#else
   static ConstructorHelpers::FObjectFinder<UFont> RobotoFontObj(
       *UWidget::GetDefaultFontName());
   _font = FSlateFontInfo(RobotoFontObj.Object, 8);
+#endif
 }
 
 UScreenCreditsWidget::~UScreenCreditsWidget() {

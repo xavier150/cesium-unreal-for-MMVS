@@ -46,6 +46,11 @@ void UCesiumGltfPrimitiveComponent::BeginDestroy() {
   Super::BeginDestroy();
 }
 
+/* CESIUM OVERRIDE NOTES:
+ * Add custom bounds for CesiumGltfPrimitiveComponent
+ * Use of BoundCustomOffset and BoundCustomExtend to allow for custom bounding box overrides.
+ */
+
 FBoxSphereBounds UCesiumGltfPrimitiveComponent::CalcBounds(
     const FTransform& LocalToWorld) const {
   const CesiumPrimitiveData& primitiveData = this->getPrimitiveData();
@@ -58,7 +63,14 @@ FBoxSphereBounds UCesiumGltfPrimitiveComponent::CalcBounds(
             primitiveData.highPrecisionNodeTransform},
         *primitiveData.boundingVolume);
   }
-  return maybeBounds.value_or(Super::CalcBounds(LocalToWorld));
+
+  FBoxSphereBounds bounds =
+      maybeBounds.value_or(Super::CalcBounds(LocalToWorld));
+
+  bounds.Origin += BoundCustomOffset;
+  bounds.BoxExtent += BoundCustomExtend;
+
+  return bounds;
 }
 
 void UCesiumGltfPrimitiveComponent::UpdateTransformFromCesium(
